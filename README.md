@@ -67,6 +67,12 @@ The four required views:
 3. **Predictions**: what will fail, where, and the estimated time to failure.
 4. **Vision detections**: tracked defects on a separate 0–10 km *belt* axis, with the latest frame of each.
 
+What the screenshots show, compared with what was planted in the demo:
+- **ST-07 (bearing) and ST-17 (misalignment)** are both flagged as predicted failures with the correct failure mode.
+- **ST-11** is flagged, but with the wrong mode (see section 6).
+- **Vision** confirmed all three active planted tears: D-001 at 5,809 m, D-105 at 4,702 m (it appears mid-run), and one at about 2,594 m. The tear at 9,996 m, just before the splice, was tracked as one defect across the wrap-around and then correctly marked `resolved` after its planned repair.
+- The grey diamonds are single-sighting `candidate`s. These are false positives the loop filters out, and none of them reached `confirmed`.
+
 ## 3. The approach
 
 ```
@@ -147,7 +153,7 @@ Per-station rejection counts are shown in the dashboard's data-quality section, 
 
 These numbers are **optimistic**, and I'd rather say so than have a reviewer discover it:
 - The faults come from my own simulator, so the model is learning patterns I wrote.
-- Drive slip and motor overload occur only at the two drive stations. Training saw just one example of each, and the test period had none. In the live demo, the model does *not* predict the planted ST-11 overload. Only the motor-current hard rule would catch it, and only once current crosses its limit.
+- Drive slip and motor overload occur only at the two drive stations. Training saw just one example of each, and the test period had none. You can see this in the screenshot. The planted ST-11 *motor overload* is flagged, but as a **bearing failure** (76%), because a rising bearing temperature is the closest pattern the model knows. The *where* is right and the *what* is wrong, which is exactly what too few training examples looks like.
 
 The honest conclusion: the pipeline is correct (no leakage, event-level evaluation, debounced alerts). The absolute numbers say little about real-world performance.
 
