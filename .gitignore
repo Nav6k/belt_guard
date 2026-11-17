@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+data/
+*.db
+vision/dataset/
+
+vision/models/*.pt
+.ipynb_checkpoints/
